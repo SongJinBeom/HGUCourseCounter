@@ -1,5 +1,6 @@
 package edu.handong.analysis;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +20,14 @@ public class HGUCoursePatternAnalyzer {
 	 * Run method must not be changed!!
 	 * @param args
 	 */
+	
 	public void run(String[] args) {
 		
 		try {
 			// when there are not enough arguments from CLI, it throws the NotEnoughArgmentException which must be defined by you.
 			if(args.length<2)
 				throw new NotEnoughArgumentException();
+			
 		} catch (NotEnoughArgumentException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
@@ -34,13 +37,16 @@ public class HGUCoursePatternAnalyzer {
 		String resultPath = args[1]; // the file path where the results are saved.
 		ArrayList<String> lines = Utils.getLines(dataPath, true);
 		
+		
 		students = loadStudentCourseRecords(lines);
 		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
 		
+		
 		// Generate result lines to be saved.
 		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+		
 		
 		// Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
@@ -55,8 +61,20 @@ public class HGUCoursePatternAnalyzer {
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
 		
 		// TODO: Implement this method
+		HashMap<String, Student> tempHashMap = new HashMap<String, Student>();
 		
-		return null; // do not forget to return a proper variable.
+		Student student1 = null;
+		Course course1 = null;
+		for(String tempString : lines) {
+			course1 = new Course(tempString);
+			if(!tempHashMap.containsKey(course1.getStudentId())){
+				student1 = new Student(course1.getStudentId());
+			}
+			student1.addCourse(course1);
+			tempHashMap.put(course1.getStudentId(), student1);
+		}
+		
+		return tempHashMap; // do not forget to return a proper variable.
 	}
 
 	/**
@@ -72,10 +90,33 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
+	
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
 		// TODO: Implement this method
+		ArrayList<String> tempArrayList = new ArrayList<String>();
+		String category = "Student,TotalNumberOfSemestersRegistered,Semester,NumCoursesTakenInTheSemester";
 		
-		return null; // do not forget to return a proper variable.
+		tempArrayList.add(category);
+		Student s1 = new Student(null);
+		
+		int total = 0;
+		String info = null;
+		int semester = 1;
+		
+		for(String key : sortedStudents.keySet()){
+			 semester = 1;
+			 s1 = sortedStudents.get(key);
+			 while(semester<=s1.getSemestersByYearAndSemester().size()){
+				 
+			 info = key +","+ s1.getSemestersByYearAndSemester().size()+","+semester +","+s1.getNumCourseInNthSementer(semester);
+			 tempArrayList.add(info);
+			 //System.out.println(info);
+			 semester++;
+			 }
+		}
+		
+			
+		return tempArrayList; // do not forget to return a proper variable.
 	}
 }
