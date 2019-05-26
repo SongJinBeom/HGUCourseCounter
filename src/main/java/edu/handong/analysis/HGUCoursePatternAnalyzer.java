@@ -100,7 +100,7 @@ public class HGUCoursePatternAnalyzer {
 		tempArrayList.add(category);
 		Student s1 = new Student(null);
 		
-		int total = 0;
+		
 		String info = null;
 		int semester = 1;
 		

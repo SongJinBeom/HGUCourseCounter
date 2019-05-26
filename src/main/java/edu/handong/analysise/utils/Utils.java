@@ -29,6 +29,7 @@ public class Utils {
 			System.exit (0);
 		}catch(NotEnoughArgumentException e) {
 			System.out.println(e);
+			System.exit (0);
 		}
 		inputStream.close();
 		return temp;
