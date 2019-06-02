@@ -246,6 +246,9 @@ public class HGUCoursePatternAnalyzer {
 				semester++;
 			}
 		}
+		if(tempArrayList.get(2)==null) {
+			System.out.println("there are not student who took that course");
+		}
 
 		return tempArrayList; // do not forget to return a proper variable.
 	}
