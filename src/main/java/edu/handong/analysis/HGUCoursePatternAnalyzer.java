@@ -97,6 +97,8 @@ public class HGUCoursePatternAnalyzer {
 				analysisResult = analysisCourse(sortedStudents, result);
 
 				linesToBeSaved = finalResult(result, analysisResult);
+				
+				
 				Utils.writeAFile(linesToBeSaved, resultPath);
 			}
 		}
